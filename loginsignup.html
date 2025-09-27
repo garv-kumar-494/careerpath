@@ -172,7 +172,7 @@
             const password = document.getElementById("signupPassword").value;
 
             try {
-                const res = await fetch("https://garvautomation.app.n8n.cloud/webhook/garvautomationsignup", {
+                const res = await fetch("https://gagn8n.app.n8n.cloud/webhook/garvautomationsignup1", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ name, email, password })
@@ -211,7 +211,7 @@
             const password = document.getElementById("loginPassword").value;
 
             try {
-                const res = await fetch("https://garvautomation.app.n8n.cloud/webhook/garvautomationlogin", {
+                const res = await fetch("https://gagn8n.app.n8n.cloud/webhook/garvautomationlogin1", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ email, password })
