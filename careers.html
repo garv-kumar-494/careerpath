@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Explore Careers - CareerPath</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+  <!-- Navbar -->
+  <nav class="bg-white shadow-md">
+    <div class="container mx-auto flex justify-between items-center py-4 px-6">
+      <h1 class="text-2xl font-bold text-indigo-600">CareerPath 🚀</h1>
+      <ul class="flex space-x-6 font-medium">
+        <li><a href="index.htm" class="hover:text-indigo-600">Home</a></li>
+        <li><a href="demo.html" class="hover:text-indigo-600">Assessment</a></li>
+        <li><a href="roadmap.html" class="hover:text-indigo-600">Roadmap</a></li>
+        <li><a href="chatbot.html" class="hover:text-indigo-600">Chatbot</a></li>
+        <li><a href="careers.html" class="text-indigo-600 font-semibold">Explore Careers</a></li>
+        <li><a href="loginsignup.html" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">Login/Signup</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Careers Section -->
+  <section class="container mx-auto py-16 px-6">
+    <h2 class="text-3xl font-bold mb-10 text-center">Explore Career Options</h2>
+    
+    <!-- Search Bar -->
+    <div class="flex justify-center mb-8">
+      <input 
+        id="searchBar"
+        type="text" 
+        placeholder="Search for a career (e.g., Doctor, Engineer, Designer...)" 
+        class="w-full md:w-1/2 px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+      >
+    </div>
+
+    <!-- Career List -->
+    <div id="career-list" class="grid md:grid-cols-3 gap-6"></div>
+  </section>
+
+  <!-- Career Modal -->
+  <div id="careerModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-xl shadow-lg p-6 w-11/12 md:w-2/3 lg:w-1/2 max-h-[90vh] overflow-y-auto">
+      <h3 id="modalTitle" class="text-2xl font-bold mb-4"></h3>
+      <p id="modalJob" class="mb-4 text-gray-700"></p>
+      <p><strong>Average Salary:</strong> <span id="modalSalary"></span></p>
+      <p><strong>Market Demand:</strong> <span id="modalDemand"></span></p>
+      <button onclick="closeModal()" class="mt-6 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">Close</button>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-gray-400 py-6 text-center">
+    <div class="mb-4">
+      <a href="home.html" class="px-3 hover:text-white">Home</a> |
+      <a href="classCategory.html" class="px-3 hover:text-white">Assessment</a> |
+      <a href="#" class="px-3 hover:text-white">Roadmap</a> |
+      <a href="chatbot.html" class="px-3 hover:text-white">Chatbot</a> |
+      <a href="careers.html" class="px-3 hover:text-white">Explore Careers</a>
+    </div>
+    <p>© 2025 CareerPath. All Rights Reserved.</p>
+  </footer>
+
+  <!-- Script -->
+  <script>
+    const careers = [
+      { title: "Software Developer", job: "Software Developers design, build, and maintain applications and systems. They work with programming languages, frameworks, and databases to create solutions that power businesses, mobile apps, and digital services.", salary: "$70k - $120k/year", demand: "Very High" },
+      { title: "Data Scientist", job: "Data Scientists analyze massive datasets to extract insights and predictions using machine learning, statistics, and AI. They guide businesses to make data-driven decisions and innovations.", salary: "$90k - $140k/year", demand: "Very High" },
+      { title: "Doctor", job: "Doctors diagnose and treat illnesses, provide medical advice, and improve patients’ health. They may specialize in areas like pediatrics, cardiology, or surgery. This career requires years of training and dedication.", salary: "$100k - $250k/year", demand: "Very High" },
+      { title: "Teacher", job: "Teachers educate and mentor students at different academic levels. They build knowledge, character, and curiosity, shaping the foundation of future generations.", salary: "$40k - $80k/year", demand: "High" },
+      { title: "Civil Engineer", job: "Civil Engineers design and manage infrastructure projects such as roads, bridges, and dams. They ensure safety, sustainability, and innovation in construction.", salary: "$60k - $110k/year", demand: "High" },
+      { title: "Mechanical Engineer", job: "Mechanical Engineers design and build machines and mechanical systems ranging from vehicles to industrial equipment. They innovate solutions for industries like energy, transport, and manufacturing.", salary: "$65k - $115k/year", demand: "High" },
+      { title: "Nurse", job: "Nurses provide essential patient care, assist doctors, and offer emotional support to families. They are critical in hospitals, clinics, and community health services.", salary: "$50k - $90k/year", demand: "Very High" },
+      { title: "Graphic Designer", job: "Graphic Designers create visual concepts using digital tools and art to communicate ideas. They work in advertising, branding, UI/UX, and entertainment.", salary: "$40k - $80k/year", demand: "Medium" },
+      { title: "Chartered Accountant", job: "Chartered Accountants manage finances, taxes, and audits for businesses and individuals. They ensure financial transparency and compliance with regulations.", salary: "$70k - $150k/year", demand: "High" },
+      { title: "Lawyer", job: "Lawyers represent clients, interpret laws, and provide legal advice. They may work in criminal law, corporate law, family law, or human rights advocacy.", salary: "$80k - $200k/year", demand: "High" },
+      {
+        title: "Entrepreneur",
+        job: "Entrepreneurs identify opportunities, start businesses, and bring innovative ideas to life. They take risks to build companies, create jobs, and drive economic growth.",
+        salary: "Varies widely ($50k - $1M+/year)",
+        demand: "High"
+      },
+      {
+        title: "Pharmacist",
+        job: "Pharmacists prepare and dispense medicines, advise patients, and work closely with doctors. They ensure safe and effective use of medications.",
+        salary: "$70k - $130k/year",
+        demand: "High"
+      },
+      {
+        title: "Psychologist",
+        job: "Psychologists study human behavior and help people deal with stress, trauma, or mental health conditions through therapy and counseling.",
+        salary: "$60k - $110k/year",
+        demand: "High"
+      },
+      {
+        title: "Architect",
+        job: "Architects design buildings and structures that are functional, safe, and aesthetically pleasing. They combine creativity with technical expertise.",
+        salary: "$70k - $120k/year",
+        demand: "High"
+      },
+      {
+        title: "Pilot",
+        job: "Pilots operate aircraft for commercial airlines, private companies, or defense forces. They ensure safe travel and navigation across the globe.",
+        salary: "$90k - $180k/year",
+        demand: "Medium"
+      },
+      {
+        title: "Chef",
+        job: "Chefs plan menus, cook dishes, and lead kitchen teams in restaurants and hotels. They combine creativity with culinary skills to create memorable dining experiences.",
+        salary: "$40k - $90k/year",
+        demand: "Medium"
+      },
+      {
+        title: "Cybersecurity Specialist",
+        job: "Cybersecurity Specialists protect networks, systems, and data from cyber threats. They identify vulnerabilities, implement defenses, and respond to attacks.",
+        salary: "$80k - $150k/year",
+        demand: "Very High"
+      },
+      {
+        title: "AI Engineer",
+        job: "AI Engineers build and deploy artificial intelligence models to power automation, recommendations, and intelligent systems in industries from healthcare to finance.",
+        salary: "$100k - $160k/year",
+        demand: "Very High"
+      },
+      {
+        title: "Digital Marketer",
+        job: "Digital Marketers create online campaigns using SEO, social media, and content strategies to promote brands and attract customers.",
+        salary: "$50k - $100k/year",
+        demand: "High"
+      },
+      {
+        title: "Content Writer",
+        job: "Content Writers produce blogs, articles, scripts, and copy that inform, engage, and persuade audiences across digital and print media.",
+        salary: "$35k - $70k/year",
+        demand: "High"
+      },
+      {
+        title: "Biotechnologist",
+        job: "Biotechnologists use biology and technology to develop medical therapies, agricultural improvements, and eco-friendly solutions.",
+        salary: "$60k - $120k/year",
+        demand: "High"
+      },
+      {
+        title: "Astronaut",
+        job: "Astronauts undergo extensive training to travel to space, conduct research, and contribute to humanity’s exploration of the universe.",
+        salary: "$100k - $150k/year",
+        demand: "Very Low (Highly Specialized)"
+      },
+      {
+        title: "Economist",
+        job: "Economists analyze financial and social trends to advise governments and companies on policies, trade, and investments.",
+        salary: "$70k - $140k/year",
+        demand: "Medium"
+      },
+      {
+        title: "Journalist",
+        job: "Journalists investigate, report, and write news stories for TV, newspapers, and online platforms, shaping public opinion.",
+        salary: "$40k - $80k/year",
+        demand: "Medium"
+      },
+      {
+        title: "Fitness Trainer",
+        job: "Fitness Trainers design workout plans, guide exercises, and motivate clients to achieve health and fitness goals.",
+        salary: "$30k - $70k/year",
+        demand: "High"
+      },
+      {
+        title: "Fashion Designer",
+        job: "Fashion Designers create clothing, accessories, and footwear, blending creativity with trends to define styles in the fashion industry.",
+        salary: "$50k - $120k/year",
+        demand: "Medium"
+      },
+      {
+        title: "Event Manager",
+        job: "Event Managers plan and organize weddings, corporate functions, and concerts, ensuring smooth execution and client satisfaction.",
+        salary: "$45k - $90k/year",
+        demand: "High"
+      },
+      {
+        title: "Dentist",
+        job: "Dentists diagnose and treat oral health problems, providing preventive care and cosmetic dental solutions.",
+        salary: "$80k - $180k/year",
+        demand: "High"
+      },
+      {
+        title: "Veterinarian",
+        job: "Veterinarians care for animals, diagnosing illnesses, performing surgeries, and advising owners on pet health.",
+        salary: "$70k - $140k/year",
+        demand: "High"
+      },
+      {
+        title: "Philosopher",
+        job: "Philosophers study fundamental questions about existence, morality, and knowledge, often teaching or contributing to ethics discussions.",
+        salary: "$40k - $80k/year",
+        demand: "Low"
+      },
+      {
+        title: "Librarian",
+        job: "Librarians manage books, digital archives, and learning resources, helping people find knowledge and information.",
+        salary: "$35k - $70k/year",
+        demand: "Medium"
+      },
+      {
+        title: "Web Developer",
+        job: "Web Developers build and maintain websites and web apps, ensuring functionality, performance, and good user experiences.",
+        salary: "$60k - $110k/year",
+        demand: "Very High"
+      },
+      {
+        title: "Blockchain Developer",
+        job: "Blockchain Developers design and implement decentralized applications and cryptocurrencies. They play a key role in fintech innovation.",
+        salary: "$90k - $150k/year",
+        demand: "High"
+      },
+      {
+        title: "Surgeon",
+        job: "Surgeons perform complex medical operations to treat injuries, diseases, and deformities, often saving lives.",
+        salary: "$150k - $300k/year",
+        demand: "High"
+      },
+      {
+        title: "Social Worker",
+        job: "Social Workers assist individuals, families, and communities in overcoming challenges related to poverty, abuse, or illness.",
+        salary: "$40k - $70k/year",
+        demand: "High"
+      },
+      {
+        title: "Environmental Scientist",
+        job: "Environmental Scientists study ecosystems, pollution, and climate change, working to protect natural resources.",
+        salary: "$60k - $100k/year",
+        demand: "High"
+      },
+      {
+        title: "Robotics Engineer",
+        job: "Robotics Engineers design and build robots for industries like healthcare, space exploration, and manufacturing.",
+        salary: "$80k - $140k/year",
+        demand: "High"
+      },
+      {
+        title: "Photographer",
+        job: "Photographers capture moments, scenes, and products for creative or commercial use, blending art with technology.",
+        salary: "$30k - $70k/year",
+        demand: "Medium"
+      },
+      {
+        title: "Translator",
+        job: "Translators convert text or speech from one language to another, bridging communication between cultures.",
+        salary: "$40k - $80k/year",
+        demand: "High"
+      },
+      {
+        title: "Politician",
+        job: "Politicians represent the public, create policies, and lead governance in local, national, or international offices.",
+        salary: "Varies widely",
+        demand: "Medium"
+      },
+      {
+        title: "Military Officer",
+        job: "Military Officers serve their country by leading soldiers, planning strategies, and ensuring national security.",
+        salary: "$50k - $100k/year",
+        demand: "High"
+      },
+      {
+        title: "Space Scientist",
+        job: "Space Scientists study planets, stars, and galaxies, contributing to humanity’s knowledge of the universe.",
+        salary: "$80k - $150k/year",
+        demand: "Low (Specialized)"
+      },
+      {
+        title: "Animator",
+        job: "Animators create 2D/3D graphics and characters for films, games, and advertisements using artistic and digital skills.",
+        salary: "$45k - $90k/year",
+        demand: "High"
+      },
+      {
+        title: "Game Developer",
+        job: "Game Developers design, code, and test video games across different platforms, blending creativity and technology.",
+        salary: "$60k - $120k/year",
+        demand: "High"
+      },
+      {
+        title: "Research Scientist",
+        job: "Research Scientists conduct experiments and publish findings in fields like medicine, physics, and technology.",
+        salary: "$70k - $140k/year",
+        demand: "High"
+      },
+      {
+        title: "HR Manager",
+        job: "HR Managers recruit, train, and support employees, creating policies and fostering a healthy workplace culture.",
+        salary: "$60k - $110k/year",
+        demand: "High"
+      },
+      {
+        title: "Real Estate Agent",
+        job: "Real Estate Agents help people buy, sell, or rent properties, requiring strong negotiation and networking skills.",
+        salary: "$50k - $120k/year",
+        demand: "High"
+      },
+      {
+        title: "Chef Nutritionist",
+        job: "Chef Nutritionists combine culinary skills with knowledge of diet and nutrition to create healthy and delicious meals.",
+        salary: "$40k - $85k/year",
+        demand: "Medium"
+      },
+      {
+        title: "Youtuber / Content Creator",
+        job: "Content Creators produce videos, blogs, and social media posts, earning through sponsorships, ads, and audiences.",
+        salary: "Varies ($20k - $500k+/year)",
+        demand: "High"
+      }
+      // 👉 ... keep the other 40 careers here as in previous version
+    ];
+
+    const careerList = document.getElementById("career-list");
+
+    function renderCareers(filter = "") {
+      careerList.innerHTML = "";
+      const filtered = careers.filter(career => 
+        career.title.toLowerCase().includes(filter.toLowerCase())
+      );
+      if (filtered.length === 0) {
+        careerList.innerHTML = `<p class="col-span-3 text-center text-gray-600">No careers found.</p>`;
+        return;
+      }
+      filtered.forEach((career, index) => {
+        const card = document.createElement("div");
+        card.className = "bg-white rounded-xl shadow-lg p-6 cursor-pointer hover:shadow-xl transition";
+        card.innerHTML = `<h3 class="text-xl font-semibold mb-2">${career.title}</h3>
+                          <p class="text-gray-600">Click to learn more →</p>`;
+        card.onclick = () => openModal(careers.indexOf(career));
+        careerList.appendChild(card);
+      });
+    }
+
+    function openModal(index) {
+      const career = careers[index];
+      document.getElementById("modalTitle").innerText = career.title;
+      document.getElementById("modalJob").innerText = career.job;
+      document.getElementById("modalSalary").innerText = career.salary;
+      document.getElementById("modalDemand").innerText = career.demand;
+      document.getElementById("careerModal").classList.remove("hidden");
+    }
+
+    function closeModal() {
+      document.getElementById("careerModal").classList.add("hidden");
+    }
+
+    document.getElementById("searchBar").addEventListener("input", (e) => {
+      renderCareers(e.target.value);
+    });
+
+    // Initial render
+    renderCareers();
+  </script>
+</body>
+</html>

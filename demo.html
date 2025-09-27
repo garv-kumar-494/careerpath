@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Career Guidance</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #3498db, #2c3e50);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-weight: 600;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .content-area {
+            padding: 30px;
+        }
+        
+        /* Level Selection Screen */
+        .options-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 25px;
+            margin-top: 20px;
+        }
+        
+        .option {
+            background: white;
+            width: 250px;
+            padding: 30px 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid #eaeaea;
+            text-align: center;
+        }
+        
+        .option:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+            border-color: #3498db;
+        }
+        
+        .icon {
+            font-size: 24px;
+            width: 60px;
+            height: 60px;
+            line-height: 60px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            color: white;
+        }
+        
+        .option:nth-child(1) .icon {
+            background: linear-gradient(135deg, #3498db, #2c3e50);
+        }
+        
+        .option:nth-child(2) .icon {
+            background: linear-gradient(135deg, #9b59b6, #34495e);
+        }
+        
+        .option:nth-child(3) .icon {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+        }
+        
+        h2 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #2c3e50;
+        }
+        
+        .description {
+            color: #7f8c8d;
+            font-size: 14px;
+            margin-top: 15px;
+        }
+        
+        /* Questionnaire Screen */
+        .questionnaire {
+            display: none;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background: #f0f0f0;
+            border-radius: 4px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background: linear-gradient(to right, #3498db, #2c3e50);
+            border-radius: 4px;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .question-count {
+            text-align: right;
+            color: #7f8c8d;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        
+        .question {
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: 25px;
+            color: #2c3e50;
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .option-btn {
+            padding: 15px 20px;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .option-btn:hover {
+            border-color: #3498db;
+            background: #f8fafd;
+        }
+        
+        .option-btn.selected {
+            border-color: #3498db;
+            background: #e1f0fa;
+            font-weight: 500;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-prev {
+            background: #f0f0f0;
+            color: #333;
+        }
+        
+        .btn-prev:hover {
+            background: #e0e0e0;
+        }
+        
+        .btn-next {
+            background: #3498db;
+            color: white;
+        }
+        
+        .btn-next:hover {
+            background: #2980b9;
+        }
+        
+        .btn-submit {
+            background: #27ae60;
+            color: white;
+            display: none;
+        }
+        
+        .btn-submit:hover {
+            background: #219653;
+        }
+        
+        /* Results Screen */
+        .results {
+            display: none;
+            text-align: center;
+            padding: 30px;
+        }
+        
+        .results-icon {
+            font-size: 60px;
+            color: #27ae60;
+            margin-bottom: 20px;
+        }
+        
+        .results-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        
+        .results-content {
+            background: #f8fafd;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        
+        .recommendation {
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+        
+        .btn-restart {
+            background: #3498db;
+            color: white;
+            margin-top: 20px;
+        }
+        
+        .btn-restart:hover {
+            background: #2980b9;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 900px) {
+            .options-container {
+                gap: 20px;
+            }
+            
+            .option {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .header {
+                padding: 20px;
+            }
+            
+            .content-area {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            .option {
+                padding: 25px 20px;
+            }
+            
+            .question {
+                font-size: 18px;
+            }
+            
+            .option-btn {
+                padding: 12px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Student Career Guidance</h1>
+            <p class="subtitle">Select your educational level to get personalized career recommendations</p>
+        </div>
+        
+        <div class="content-area">
+            <!-- Level Selection Screen -->
+            <div class="level-selection" id="levelSelection">
+                <div class="options-container">
+                    <div class="option" data-level="9-10">
+                        <div class="icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <h2>Grades 9-10</h2>
+                        <p>Secondary education foundation years</p>
+                        <div class="description">For high school students in their initial years of specialization</div>
+                    </div>
+                    
+                    <div class="option" data-level="11-12">
+                        <div class="icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <h2>Grades 11-12</h2>
+                        <p>College preparation level</p>
+                        <div class="description">Advanced coursework for university entrance preparation</div>
+                    </div>
+                    
+                    <div class="option" data-level="college">
+                        <div class="icon">
+                            <i class="fas fa-university"></i>
+                        </div>
+                        <h2>College</h2>
+                        <p>Higher education</p>
+                        <div class="description">Undergraduate and graduate level academic resources</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Questionnaire Screen -->
+            <div class="questionnaire" id="questionnaire">
+                <div class="question-count">Question <span id="currentQuestion">1</span> of <span id="totalQuestions">8</span></div>
+                <div class="progress-bar">
+                    <div class="progress" id="progress"></div>
+                </div>
+                
+                <h3 class="question" id="questionText">What are your favorite subjects?</h3>
+                
+                <div class="options" id="optionsContainer">
+                    <!-- Options will be inserted here by JavaScript -->
+                </div>
+                
+                <div class="nav-buttons">
+                    <button class="btn-prev" id="btnPrev"><i class="fas fa-arrow-left"></i> Previous</button>
+                    <button class="btn-next" id="btnNext">Next <i class="fas fa-arrow-right"></i></button>
+                    <button class="btn-submit" id="btnSubmit">Submit Answers</button>
+                </div>
+            </div>
+            
+            <!-- Results Screen -->
+            <div class="results" id="results">
+                <div class="results-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h2 class="results-title">Career Recommendation</h2>
+                <p>Based on your answers, here's our recommendation:</p>
+                
+                <div class="results-content">
+                    <p class="recommendation" id="streamRecommendation"></p>
+                    <p id="careerRecommendation"></p>
+                </div>
+
+               <!--  <button class="btn-restart" id="btnRestart">Take Another Assessment</button> -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const levelSelection = document.getElementById('levelSelection');
+            const questionnaire = document.getElementById('questionnaire');
+            const results = document.getElementById('results');
+            const questionText = document.getElementById('questionText');
+            const optionsContainer = document.getElementById('optionsContainer');
+            const btnPrev = document.getElementById('btnPrev');
+            const btnNext = document.getElementById('btnNext');
+            const btnSubmit = document.getElementById('btnSubmit');
+           // const btnRestart = document.getElementById('btnRestart');
+            const currentQuestionEl = document.getElementById('currentQuestion');
+            const totalQuestionsEl = document.getElementById('totalQuestions');
+            const progress = document.getElementById('progress');
+            const streamRecommendation = document.getElementById('streamRecommendation');
+            const careerRecommendation = document.getElementById('careerRecommendation');
+            
+const WEBHOOK_URL = "https://garvautomation.app.n8n.cloud/webhook/getsubjectspdflinks"; // Replace with your actual webhook URL
+
+            // Question sets for each level
+            const questions = {
+                '9-10': [
+                    {
+                        question: "What are your favorite subjects?",
+                        options: ["Science and Mathematics", "Social Sciences and Languages", "Art and Creative subjects", "Physical Education and Sports"]
+                    },
+                    {
+                        question: "What type of activities do you enjoy the most?",
+                        options: ["Experiments and problem-solving", "Reading and writing", "Drawing and creative projects", "Sports and physical activities"]
+                    },
+                    {
+                        question: "How do you prefer to spend your free time?",
+                        options: ["Reading science magazines", "Debating or discussing topics", "Creating art or music", "Playing outdoor games"]
+                    },
+                    {
+                        question: "Which career path interests you the most?",
+                        options: ["Engineer or Doctor", "Lawyer or Journalist", "Artist or Designer", "Athlete or Coach"]
+                    },
+                    {
+                        question: "What are your strengths?",
+                        options: ["Analytical thinking", "Communication skills", "Creativity", "Physical stamina"]
+                    },
+                    {
+                        question: "Which field would you like to explore more?",
+                        options: ["Technology and Innovation", "Literature and History", "Arts and Culture", "Sports and Fitness"]
+                    },
+                    {
+                        question: "What kind of projects do you enjoy?",
+                        options: ["Science fair projects", "Research papers", "Art exhibitions", "Sports competitions"]
+                    },
+                    {
+                        question: "Which subject do you find most challenging?",
+                        options: ["Languages", "Mathematics", "Theoretical subjects", "Practical subjects"]
+                    }
+                ],
+                '11-12': [
+                    {
+                        question: "Which stream are you currently in?",
+                        options: ["Science", "Commerce", "Arts/Humanities", "Vocational"]
+                    },
+                    {
+                        question: "What are your career aspirations?",
+                        options: ["Engineering/Medical", "Business/Finance", "Arts/Social Sciences", "Sports/Other"]
+                    },
+                    {
+                        question: "Which subjects do you excel in?",
+                        options: ["Physics/Chemistry/Biology", "Accountancy/Economics", "History/Psychology", "Physical Education/IT"]
+                    },
+                    {
+                        question: "What type of work environment do you prefer?",
+                        options: ["Laboratory/Research", "Corporate Office", "Creative Studio", "Field Work"]
+                    },
+                    {
+                        question: "Which skills do you want to develop?",
+                        options: ["Analytical and Technical", "Financial and Managerial", "Communication and Creative", "Practical and Hands-on"]
+                    },
+                    {
+                        question: "What kind of challenges do you enjoy?",
+                        options: ["Complex problem solving", "Strategic planning", "Creative expression", "Physical challenges"]
+                    },
+                    {
+                        question: "Which extracurricular activities are you involved in?",
+                        options: ["Science Olympiads", "Business clubs", "Debate/Drama", "Sports teams"]
+                    },
+                    {
+                        question: "What is your preferred learning style?",
+                        options: ["Theoretical concepts", "Case studies", "Discussions", "Practical applications"]
+                    }
+                ],
+                'college': [
+                    {
+                        question: "What is your field of study?",
+                        options: ["STEM (Science, Technology, Engineering, Math)", "Business/Commerce", "Arts/Humanities", "Other"]
+                    },
+                    {
+                        question: "What are your career goals?",
+                        options: ["Research and Development", "Corporate Leadership", "Creative Industries", "Entrepreneurship"]
+                    },
+                    {
+                        question: "Which skills have you developed during college?",
+                        options: ["Technical and Analytical", "Managerial and Financial", "Communication and Critical Thinking", "Practical and Vocational"]
+                    },
+                    {
+                        question: "What type of internship experiences have you had?",
+                        options: ["Tech companies/Research labs", "Business corporations", "Media/Design firms", "Startups/Self-initiated projects"]
+                    },
+                    {
+                        question: "What industry attracts you the most?",
+                        options: ["Technology/Healthcare", "Finance/Consulting", "Education/Arts", "Sports/Other services"]
+                    },
+                    {
+                        question: "Where do you see yourself in 5 years?",
+                        options: ["Specialized technical role", "Managerial position", "Creative director", "Running my own business"]
+                    },
+                    {
+                        question: "What motivates you in your career choices?",
+                        options: ["Innovation and discovery", "Financial success", "Creative expression", "Personal fulfillment"]
+                    },
+                    {
+                        question: "Which work values are most important to you?",
+                        options: ["Intellectual challenge", "Career advancement", "Work-life balance", "Independence"]
+                    }
+                ]
+            };
+            
+            // Recommendation mappings
+            const recommendations = {
+                '9-10': {
+                    "Science and Mathematics": "Science Stream (PCM/PCB)",
+                    "Social Sciences and Languages": "Commerce or Arts Stream",
+                    "Art and Creative subjects": "Arts Stream with creative electives",
+                    "Physical Education and Sports": "Physical Education or Vocational streams"
+                },
+                '11-12': {
+                    "Science": "Engineering, Medical, or Pure Sciences",
+                    "Commerce": "Business, Finance, or Economics",
+                    "Arts/Humanities": "Liberal Arts, Social Sciences, or Law",
+                    "Vocational": "Specialized professional courses"
+                },
+                'college': {
+                    "STEM": "Advanced degrees in Specialized Fields or Research",
+                    "Business/Commerce": "MBA or Professional Certifications",
+                    "Arts/Humanities": "Higher Studies or Creative Industries",
+                    "Other": "Industry-specific certifications or Entrepreneurship"
+                }
+            };
+            
+            // Current state
+            let currentLevel = '';
+            let currentQuestion = 0;
+            let userAnswers = [];
+            
+            // Initialize the application
+            function init() {
+                // Add event listeners to level options
+                const levelOptions = document.querySelectorAll('.option[data-level]');
+                levelOptions.forEach(option => {
+                    option.addEventListener('click', () => {
+                        currentLevel = option.getAttribute('data-level');
+                        startQuestionnaire();
+                    });
+                });
+                
+                // Navigation buttons
+                btnPrev.addEventListener('click', showPreviousQuestion);
+                btnNext.addEventListener('click', showNextQuestion);
+                btnSubmit.addEventListener('click', showResults);
+               // btnRestart.addEventListener('click', restartAssessment);
+            }
+            
+            // Start the questionnaire for the selected level
+            function startQuestionnaire() {
+                levelSelection.style.display = 'none';
+                questionnaire.style.display = 'block';
+                
+                totalQuestionsEl.textContent = questions[currentLevel].length;
+                updateProgressBar();
+                showQuestion();
+            }
+            
+            // Show current question
+            function showQuestion() {
+                const question = questions[currentLevel][currentQuestion];
+                questionText.textContent = question.question;
+                currentQuestionEl.textContent = currentQuestion + 1;
+                
+                // Clear previous options
+                optionsContainer.innerHTML = '';
+                
+                // Add new options
+                question.options.forEach((option, index) => {
+                    const optionElement = document.createElement('div');
+                    optionElement.className = 'option-btn';
+                    optionElement.textContent = option;
+                    optionElement.addEventListener('click', () => selectOption(optionElement, index));
+                    optionsContainer.appendChild(optionElement);
+                });
+                
+                // Update navigation buttons
+                btnPrev.style.display = currentQuestion === 0 ? 'none' : 'block';
+                btnNext.style.display = currentQuestion === questions[currentLevel].length - 1 ? 'none' : 'block';
+                btnSubmit.style.display = currentQuestion === questions[currentLevel].length - 1 ? 'block' : 'none';
+            }
+            
+            // Select an option
+            function selectOption(optionElement, index) {
+                // Remove selected class from all options
+                const allOptions = document.querySelectorAll('.option-btn');
+                allOptions.forEach(option => option.classList.remove('selected'));
+                
+                // Add selected class to clicked option
+                optionElement.classList.add('selected');
+                
+                // Store the answer
+                userAnswers[currentQuestion] = index;
+            }
+            
+            // Show next question
+            function showNextQuestion() {
+                if (userAnswers[currentQuestion] === undefined) {
+                    alert('Please select an option before continuing.');
+                    return;
+                }
+                
+                currentQuestion++;
+                updateProgressBar();
+                showQuestion();
+            }
+            
+            // Show previous question
+            function showPreviousQuestion() {
+                currentQuestion--;
+                updateProgressBar();
+                showQuestion();
+            }
+            
+            // Update progress bar
+            function updateProgressBar() {
+                const progressPercent = ((currentQuestion + 1) / questions[currentLevel].length) * 100;
+                progress.style.width = progressPercent + '%';
+            }
+            
+            // Show results
+           async function showResults() {
+                if (userAnswers[currentQuestion] === undefined) {
+                    alert('Please select an option before submitting.');
+                    return;
+                }
+                
+                questionnaire.style.display = 'none';
+                results.style.display = 'block';
+                
+                // Calculate recommendation based on answers
+                const mostFrequentAnswer = getMostFrequentAnswer();
+                const recommendation = recommendations[currentLevel][mostFrequentAnswer];
+                
+                streamRecommendation.textContent = `We recommend: ${recommendation}`;
+                
+                // Add additional advice based on level
+                if (currentLevel === '9-10') {
+                    careerRecommendation.textContent = "Focus on building strong fundamentals in your preferred subjects. Explore extracurricular activities related to your interests to gain more clarity about your career path.";
+                } else if (currentLevel === '11-12') {
+                    careerRecommendation.textContent = "Consider taking aptitude tests and talking to professionals in fields that interest you. Research universities and programs that align with your strengths and interests.";
+                } else {
+                    careerRecommendation.textContent = "Look for internships and networking opportunities in your chosen field. Consider postgraduate studies or professional certifications to enhance your qualifications.";
+                }
+                const payload ={
+                    level: currentLevel,
+                    answers: userAnswers.map((a, i) => ({
+                        question: questions[currentLevel][i].question,
+                        answer: questions[currentLevel][i].options[a]
+                    })),
+                    recommendation
+                };
+
+                try {
+                    const response = await fetch(WEBHOOK_URL, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(payload)
+                    });
+
+                    const data = await response.json().catch(() => null);
+                      // 🔹 सिर्फ "content" निकालना
+    let contentText = "";
+    if (data && Array.isArray(data) && data[0]?.message?.content) {
+        contentText = data[0].message.content;
+    } else {
+        contentText = JSON.stringify(data, null, 2); // fallback
+    }
+
+  // 👇 नया div बनाकर student को दिखाओ
+
+// Replace links in text with clickable <a> tags
+const linkedText = contentText.replace(
+  /(https?:\/\/[^\s]+)/g,
+  '<a href="$1" target="_blank" style="color: #1a73e8; text-decoration: underline;">$1</a>'
+);
+
+        const webhookReplyDiv = document.createElement('div');
+        webhookReplyDiv.style.marginTop = "20px";
+        webhookReplyDiv.style.padding = "15px";
+        webhookReplyDiv.style.background = "#eef6ff";
+        webhookReplyDiv.style.borderRadius = "8px";
+        webhookReplyDiv.style.whiteSpace = "pre-wrap";
+        webhookReplyDiv.innerHTML = "📩 Webhook Reply:\n" + linkedText;
+
+        results.appendChild(webhookReplyDiv);
+  console.log("✅ Webhook response:", contentText);
+
+                    // You can use contentText here as needed
+                } catch(error) {
+                    console.error("Error sending data to webhook:", error);
+                }
+
+            }
+
+            
+            // Get the most frequent answer for recommendation
+            function getMostFrequentAnswer() {
+                // For simplicity, we'll use the answer from the first question
+                // In a real application, this would be more sophisticated
+                const firstAnswerIndex = userAnswers[0];
+                return questions[currentLevel][0].options[firstAnswerIndex];
+            }
+            
+            // Restart the assessment
+            function restartAssessment() {
+                currentLevel = '';
+                currentQuestion = 0;
+                userAnswers = [];
+                
+                results.style.display = 'none';
+                levelSelection.style.display = 'block';
+                
+                updateProgressBar();
+            }
+            
+            // Initialize the app
+            init();
+        });
+    </script>
+</body>
+</html>

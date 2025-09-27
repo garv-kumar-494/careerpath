@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CareerPath Pro | AI-Powered Career Guidance</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#3b82f6',
+            secondary: '#6366f1',
+            accent: '#10b981',
+            dark: '#1f2937',
+            light: '#f9fafb'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    
+    html {
+      scroll-behavior: smooth; /* Smooth scrolling behavior */
+    }
+
+    * {
+      font-family: 'Inter', sans-serif;
+    }
+    
+    .hero-bg {
+      background: linear-gradient(120deg, rgba(30, 64, 175, 0.85) 0%, rgba(59, 130, 246, 0.9) 100%), url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1471&q=80');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed; /* Optimize for scrolling */
+    }
+    
+    .card-hover {
+      transition: transform 0.2s ease-out, box-shadow 0.2s ease-out; /* Faster transitions */
+    }
+    
+    .card-hover:hover {
+      transform: translateY(-3px); /* Reduced transform distance */
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1); /* Lighter shadow */
+    }
+    
+    .nav-link {
+      position: relative;
+    }
+    
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -4px;
+      left: 0;
+      background-color: #3b82f6;
+      transition: width 0.2s ease-out; /* Faster transition */
+    }
+    
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    
+    .feature-icon {
+      width: 60px; /* Slightly smaller for performance */
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+    }
+    
+    .program-card {
+      transition: transform 0.2s ease-out, box-shadow 0.2s ease-out; /* Faster transitions */
+      border-left: 4px solid transparent;
+    }
+    
+    .program-card:hover {
+      transform: translateY(-2px); /* Reduced transform */
+      border-left-color: #3b82f6;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08); /* Lighter shadow */
+    }
+    
+    /* Roadmap Styles */
+    .roadmap-container {
+      position: relative;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .roadmap-line {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: linear-gradient(to bottom, #3b82f6, #6366f1);
+      transform: translateX(-50%);
+      z-index: 1;
+    }
+    
+    .roadmap-item {
+      position: relative;
+      display: flex;
+      margin-bottom: 50px; /* Slightly reduced spacing */
+      z-index: 2;
+    }
+    
+    .roadmap-item:nth-child(odd) {
+      flex-direction: row;
+    }
+    
+    .roadmap-item:nth-child(even) {
+      flex-direction: row-reverse;
+    }
+    
+    .roadmap-content {
+      width: 45%;
+      padding: 20px; /* Reduced padding */
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.06); /* Lighter shadow */
+      transition: transform 0.2s ease-out, box-shadow 0.2s ease-out; /* Faster transitions */
+    }
+    
+    .roadmap-content:hover {
+      transform: translateY(-3px); /* Reduced transform */
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* Lighter shadow */
+    }
+    
+    .roadmap-icon {
+      width: 60px; /* Smaller icon */
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+      font-size: 20px; /* Smaller font size */
+      color: white;
+    }
+    
+    .roadmap-item:nth-child(odd) .roadmap-icon {
+      background: linear-gradient(135deg, #3b82f6, #6366f1);
+    }
+    
+    .roadmap-item:nth-child(even) .roadmap-icon {
+      background: linear-gradient(135deg, #10b981, #059669);
+    }
+    
+    .roadmap-marker {
+      position: absolute;
+      left: 50%;
+      top: 25px; /* Adjusted positioning */
+      width: 16px; /* Smaller marker */
+      height: 16px;
+      border-radius: 50%;
+      background: white;
+      border: 3px solid #3b82f6;
+      transform: translateX(-50%);
+      z-index: 3;
+    }
+    
+    .roadmap-item:nth-child(even) .roadmap-marker {
+      border-color: #10b981;
+    }
+    
+    /* Responsive roadmap */
+    @media (max-width: 768px) {
+      .roadmap-line {
+        left: 25px; /* Adjusted for smaller screens */
+      }
+      
+      .roadmap-item {
+        flex-direction: row !important;
+        margin-bottom: 30px; /* Reduced spacing */
+      }
+      
+      .roadmap-content {
+        width: calc(100% - 50px);
+        margin-left: 50px;
+      }
+      
+      .roadmap-marker {
+        left: 25px;
+      }
+    }
+    
+    /* Chatbot Styles */
+    .chatbot-icon {
+      position: fixed;
+      bottom: 25px; /* Adjusted positioning */
+      right: 25px;
+      width: 50px; /* Smaller size */
+      height: 50px;
+      background: linear-gradient(135deg, #3b82f6, #6366f1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 15px rgba(59, 130, 246, 0.4); /* Lighter shadow */
+      cursor: pointer;
+      z-index: 1000;
+      transition: transform 0.2s ease-out; /* Simplified transition */
+    }
+    
+    .chatbot-icon:hover {
+      transform: scale(1.05); /* Smaller scale for hover */
+      box-shadow: 0 8px 20px rgba(59, 130, 246, 0.5); /* Lighter shadow */
+    }
+    
+    .chatbot-icon i {
+      color: white;
+      font-size: 20px; /* Smaller icon */
+    }
+    
+    .chatbot-tooltip {
+      position: absolute;
+      bottom: 60px; /* Adjusted positioning */
+      right: 0;
+      background: white;
+      color: #1f2937;
+      padding: 6px 10px; /* Reduced padding */
+      border-radius: 6px;
+      font-size: 13px; /* Smaller font */
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Lighter shadow */
+      white-space: nowrap;
+      opacity: 0;
+      transform: translateY(8px); /* Reduced transform */
+      transition: opacity 0.2s ease-out, transform 0.2s ease-out; /* Faster transition */
+      pointer-events: none;
+    }
+    
+    .chatbot-icon:hover .chatbot-tooltip {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.6);
+      }
+      70% {
+        box-shadow: 0 0 0 8px rgba(59, 130, 246, 0); /* Smaller pulse */
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+      }
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .chatbot-icon {
+        width: 45px; /* Smaller size */
+        height: 45px;
+        bottom: 15px;
+        right: 15px;
+      }
+      
+      .chatbot-icon i {
+        font-size: 18px; /* Smaller icon */
+      }
+    }
+  </style>
+</head>
+<body class="bg-light text-dark">
+
+  <!-- Navbar -->
+  <nav class="bg-white shadow-lg sticky top-0 z-50">
+    <div class="container mx-auto flex justify-between items-center py-4 px-6">
+      <div class="flex items-center">
+        <h1 class="text-2xl font-bold text-primary flex items-center">
+          <span class="bg-primary text-white p-1 rounded mr-2"><i class="fas fa-rocket"></i></span>
+          CareerPath
+        </h1>
+      </div>
+      
+      <div class="hidden md:flex space-x-8 font-medium">
+        <a href="index.htm" class="nav-link text-gray-700 hover:text-primary">Home</a>
+        <a href="demo.html" class="nav-link text-gray-700 hover:text-primary">Assessment</a>
+        <a href="guidance.html" class="nav-link text-gray-700 hover:text-primary">Guidance</a>
+        <a href="roadmap.html" class="nav-link text-gray-700 hover:text-primary">Roadmap</a>
+        <a href="chatbot.html" class="nav-link text-gray-700 hover:text-primary">AI Mentor</a>
+        <a href="comparison.html" class="nav-link text-gray-700 hover:text-primary">Compare</a>
+        <a href="careers.html" class="nav-link text-gray-700 hover:text-primary">Career</a>
+      </div>
+      
+      <div>
+        <a href="loginsignup.html" class="bg-primary text-white px-5 py-2.5 rounded-lg hover:bg-secondary transition duration-300 font-medium shadow-md">Login</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section (Mindler-inspired) -->
+  <section class="hero-bg text-white py-20 md:py-28">
+    <div class="container mx-auto px-6 text-center">
+      <h2 class="text-4xl md:text-5xl font-bold mb-6 leading-tight">Discover Your Perfect Career</h2>
+      <p class="text-xl mb-10 max-w-3xl mx-auto opacity-95">Make smart decisions with our revolutionary AI enabled career guidance tools and expert career counsellors</p>
+      <div class="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-6">
+        <a href="demo.html" class="bg-white text-primary font-semibold px-8 py-4 rounded-lg shadow-lg hover:bg-gray-100 transition duration-300 transform hover:-translate-y-1">
+          <i class="fas fa-brain mr-2"></i> Get Started
+        </a>
+      </div>
+      
+      <!-- Feature Highlights -->
+      <div class="grid grid-cols-3 gap-6 mt-16 text-sm">
+        <!-- Left Column -->
+        <div class="space-y-4">
+          <div class="flex items-center">
+            <i class="fas fa-clipboard-check mr-2 text-accent"></i>
+            <span>Career Assessment</span>
+          </div>
+          <div class="flex items-center">
+            <i class="fas fa-user-graduate mr-2 text-accent"></i>
+            <span>Personalised Guidance</span>
+          </div>
+        </div>
+
+        <!-- Center Column -->
+        <div class="space-y-4">
+          <div class="flex items-center">
+            <i class="fas fa-briefcase mr-2 text-accent"></i>
+            <span>Virtual Internships</span>
+          </div>
+          <div class="flex items-center">
+            <i class="fas fa-map-marked-alt mr-2 text-accent"></i>
+            <span>College Roadmap Planning</span>
+          </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="space-y-4">
+          <div class="flex items-center">
+            <i class="fas fa-file-alt mr-2 text-accent"></i>
+            <span>College Applications</span>
+          </div>
+          <div class="flex items-center">
+            <i class="fas fa-award mr-2 text-accent"></i>
+            <span>Scholarship Hunt</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Shaping Career Guidance Section -->
+  <section class="py-16 bg-white">
+    <div class="container mx-auto px-6">
+      <h2 class="text-3xl font-bold text-center mb-4">Shaping the Career Guidance Landscape</h2>
+      <p class="text-gray-600 text-center max-w-3xl mx-auto mb-16">Comprehensive career guidance solutions for students, parents, educators and schools</p>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+        <div class="bg-light p-8 rounded-xl card-hover">
+          <div class="feature-icon bg-blue-100 text-primary inline-flex">
+            <i class="fas fa-search text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-4">Identify Best-Fit Careers</h3>
+          <p class="text-gray-600">Enable students to identify their best-fit career with our world-class career assessment and personalised guidance.</p>
+        </div>
+        
+        <div class="bg-light p-8 rounded-xl card-hover">
+          <div class="feature-icon bg-green-100 text-accent inline-flex">
+            <i class="fas fa-globe-americas text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-4">Explore Professional World</h3>
+          <p class="text-gray-600">Empower students to learn all about the professional world with virtual career simulations, exhaustive career library, career blogs and vlogs.</p>
+        </div>
+        
+        <div class="bg-light p-8 rounded-xl card-hover">
+          <div class="feature-icon bg-purple-100 text-secondary inline-flex">
+            <i class="fas fa-school text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-4">School Ecosystem Development</h3>
+          <p class="text-gray-600">Enable schools in creating a career guidance ecosystem in sync with the vision of New Education Policy.</p>
+        </div>
+        
+        <div class="bg-light p-8 rounded-xl card-hover">
+          <div class="feature-icon bg-yellow-100 text-yellow-600 inline-flex">
+            <i class="fas fa-chalkboard-teacher text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-4">Educator Empowerment</h3>
+          <p class="text-gray-600">Empower educators to become International Certified Career Coaches and build a career in career guidance & counselling.</p>
+        </div>
+        
+        <div class="bg-light p-8 rounded-xl card-hover">
+          <div class="feature-icon bg-red-100 text-red-600 inline-flex">
+            <i class="fas fa-graduation-cap text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-4">College Application Guidance</h3>
+          <p class="text-gray-600">Pave students way to their dream college with our end-to-end college application guidance, scholarship drive and corporate internship program.</p>
+        </div>
+        
+        <div class="bg-light p-8 rounded-xl card-hover">
+          <div class="feature-icon bg-indigo-100 text-indigo-600 inline-flex">
+            <i class="fas fa-laptop-code text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-4">Technology-Driven Solutions</h3>
+          <p class="text-gray-600">Revolutionary assessment platform and technology driven career guidance solutions for educators to boost their career guidance & counselling practice.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Our Programs Section -->
+  <section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-6">
+      <h2 class="text-3xl font-bold text-center mb-2">Our Programs</h2>
+      <p class="text-gray-600 text-center max-w-3xl mx-auto mb-8">
+        Personalized, expert services & support for all stakeholders in the career guidance process.
+      </p>
+
+      <!-- Tabs -->
+      <div class="grid grid-cols-1 md:grid-cols-3 text-center bg-white rounded-lg shadow-md overflow-hidden mb-10">
+        <!-- For Students -->
+         <a href="demo.html" class="block">
+        <div class="p-6 border-b md:border-b-0 md:border-r cursor-pointer bg-gray-50 hover:bg-gray-100">
+          <div class="flex justify-center mb-4">
+            <img src="https://cdn-icons-png.flaticon.com/512/201/201818.png" alt="Students" class="w-14 h-14">
+          </div>
+          <h3 class="text-lg font-semibold">For Students</h3>
+        </div>
+         </a>
+        <!-- For Institutions -->
+         <a href="demo.html" class="block">
+        <div class="p-6 border-b md:border-b-0 md:border-r cursor-pointer hover:bg-gray-100">
+          <div class="flex justify-center mb-4">
+            <img src="https://cdn-icons-png.flaticon.com/512/201/201565.png" alt="Institutions" class="w-14 h-14">
+          </div>
+          <h3 class="text-lg font-semibold">For Institutions</h3>
+        </div> </a>
+        <!-- For Career Professionals -->
+         <a href="demo.html" class="block">
+        <div class="p-6 cursor-pointer hover:bg-gray-100">
+          <div class="flex justify-center mb-4">
+            <img src="https://cdn-icons-png.flaticon.com/512/201/201634.png" alt="Professionals" class="w-14 h-14">
+          </div>
+          <h3 class="text-lg font-semibold">For Career Professionals</h3>
+        </div> </a>
+      </div>
+
+      <!-- Program Cards -->
+      <div>
+        <p class="text-gray-500 text-center text-sm mb-10">CAREER COUNSELLING PROGRAMS</p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <!-- Class 8-9 -->
+          <div class="bg-white p-8 rounded-xl program-card shadow-md border-t-4 border-pink-400">
+            <h3 class="text-xl font-semibold text-pink-500 mb-2">Class 8-9</h3>
+            <h4 class="text-gray-700 font-medium mb-3">Stream & Subject Selection</h4>
+            <p class="text-gray-600 mb-4 text-sm">
+              Advanced assessment & personalised guidance to help you select the perfect stream and subjects that align you to the right careers.
+            </p>
+            <a href="careers.html" class="text-primary font-semibold hover:underline text-sm">View Program Details</a>
+          </div>
+
+          <!-- Class 10-12 -->
+          <div class="bg-white p-8 rounded-xl program-card shadow-md border-t-4 border-pink-400">
+            <h3 class="text-xl font-semibold text-pink-500 mb-2">Class 10-12</h3>
+            <h4 class="text-gray-700 font-medium mb-3">Career Selection & Planning</h4>
+            <p class="text-gray-600 mb-4 text-sm">
+              Expert guidance & 5-dimensional assessment to help you discover your perfect career and choose the right course and college.
+            </p>
+            <a href="careers.html" class="text-primary font-semibold hover:underline text-sm">View Program Details</a>
+          </div>
+
+          <!-- College & Graduates -->
+          <div class="bg-white p-8 rounded-xl program-card shadow-md border-t-4 border-pink-400">
+            <h3 class="text-xl font-semibold text-pink-500 mb-2">College and Graduates</h3>
+            <h4 class="text-gray-700 font-medium mb-3">Career Selection & Development</h4>
+            <p class="text-gray-600 mb-4 text-sm">
+              5-dimensional assessment & superior guidance to help you discover your perfect career and choose the best next step.
+            </p>
+            <a href="careers.html" class="text-primary font-semibold hover:underline text-sm">View Program Details</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Career Roadmap Section -->
+  <section class="py-16 bg-white">
+    <div class="container mx-auto px-6">
+      <h2 class="text-3xl font-bold text-center mb-2">Your Career Roadmap</h2>
+      <p class="text-gray-600 text-center max-w-3xl mx-auto mb-12">
+        Follow our step-by-step roadmap to achieve your career goals with confidence
+      </p>
+      
+      <div class="roadmap-container">
+        <div class="roadmap-line"></div>
+        
+        <!-- Step 1 -->
+        <div class="roadmap-item">
+          <div class="roadmap-content">
+            <div class="roadmap-icon">
+              <i class="fas fa-user-check"></i>
+            </div>
+            <h3 class="text-xl font-semibold mb-2">Step 1: Self-Assessment</h3>
+            <p class="text-gray-600 mb-4">
+              Discover your strengths, interests, and values through our comprehensive assessment tools.
+            </p>
+            <ul class="text-gray-600 list-disc pl-5 space-y-1">
+              <li>Personality profiling</li>
+              <li>Skills evaluation</li>
+              <li>Interest mapping</li>
+            </ul>
+          </div>
+          <div class="roadmap-marker"></div>
+        </div>
+        
+        <!-- Step 2 -->
+        <div class="roadmap-item">
+          <div class="roadmap-content">
+            <div class="roadmap-icon">
+              <i class="fas fa-search"></i>
+            </div>
+            <h3 class="text-xl font-semibold mb-2">Step 2: Career Exploration</h3>
+            <p class="text-gray-600 mb-4">
+              Explore various career options that align with your assessment results.
+            </p>
+            <ul class="text-gray-600 list-disc pl-5 space-y-1">
+              <li>Industry research</li>
+              <li>Job market analysis</li>
+              <li>Future growth potential</li>
+            </ul>
+          </div>
+          <div class="roadmap-marker"></div>
+        </div>
+        
+        <!-- Step 3 -->
+        <div class="roadmap-item">
+          <div class="roadmap-content">
+            <div class="roadmap-icon">
+              <i class="fas fa-graduation-cap"></i>
+            </div>
+            <h3 class="text-xl font-semibold mb-2">Step 3: Education Planning</h3>
+            <p class="text-gray-600 mb-4">
+              Identify the educational path required for your chosen career.
+            </p>
+            <ul class="text-gray-600 list-disc pl-5 space-y-1">
+              <li>Course selection guidance</li>
+              <li>College/university recommendations</li>
+              <li>Scholarship opportunities</li>
+            </ul>
+          </div>
+          <div class="roadmap-marker"></div>
+        </div>
+        
+        <!-- Step 4 -->
+        <div class="roadmap-item">
+          <div class="roadmap-content">
+            <div class="roadmap-icon">
+              <i class="fas fa-briefcase"></i>
+            </div>
+            <h3 class="text-xl font-semibold mb-2">Step 4: Skill Development</h3>
+            <p class="text-gray-600 mb-4">
+              Build the necessary skills through targeted learning and practical experience.
+            </p>
+            <ul class="text-gray-600 list-disc pl-5 space-y-1">
+              <li>Certification programs</li>
+              <li>Virtual internships</li>
+              <li>Skill-building workshops</li>
+            </ul>
+          </div>
+          <div class="roadmap-marker"></div>
+        </div>
+        
+        <!-- Step 5 -->
+        <div class="roadmap-item">
+          <div class="roadmap-content">
+            <div class="roadmap-icon">
+              <i class="fas fa-rocket"></i>
+            </div>
+            <h3 class="text-xl font-semibold mb-2">Step 5: Career Launch</h3>
+            <p class="text-gray-600 mb-4">
+              Prepare for and secure your dream job with our career launch support.
+            </p>
+            <ul class="text-gray-600 list-disc pl-5 space-y-1">
+              <li>Resume building</li>
+              <li>Interview preparation</li>
+              <li>Job placement assistance</li>
+            </ul>
+          </div>
+          <div class="roadmap-marker"></div>
+        </div>
+      </div>
+      
+      <div class="text-center mt-12">
+        <a href="roadmap.html" class="bg-primary text-white font-semibold px-8 py-3 rounded-lg shadow-lg hover:bg-secondary transition duration-300 inline-block">
+          Create Your Personalized Roadmap
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="py-16 bg-primary text-white">
+    <div class="container mx-auto px-6">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+        <div>
+          <h3 class="text-4xl font-bold mb-2">95%</h3>
+          <p class="text-gray-200">User Satisfaction Rate</p>
+        </div>
+        <div>
+          <h3 class="text-4xl font-bold mb-2">50K+</h3>
+          <p class="text-gray-200">Students Guided</p>
+        </div>
+        <div>
+          <h3 class="text-4xl font-bold mb-2">200+</h3>
+          <p class="text-gray-200">Career Paths Available</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-16 bg-gradient-to-r from-primary to-secondary text-white">
+    <div class="container mx-auto px-6 text-center">
+      <h2 class="text-3xl font-bold mb-6">Ready to Discover Your Career Path?</h2>
+      <p class="text-xl mb-10 max-w-2xl mx-auto">Join thousands of students who have found their ideal career with our guidance</p>
+      <a href="loginsignup.html" class="bg-white text-primary font-semibold px-8 py-4 rounded-lg shadow-lg hover:bg-gray-100 transition duration-300 inline-block">
+        Get Started For Free
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-gray-400 py-12">
+    <div class="container mx-auto px-6">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div>
+          <h3 class="text-white text-xl font-bold mb-4 flex items-center">
+            <span class="bg-primary text-white p-1 rounded mr-2"><i class="fas fa-rocket"></i></span>
+            CareerPath
+          </h3>
+          <p class="mb-4">AI-powered career guidance to help you discover and achieve your professional potential.</p>
+          <div class="flex space-x-4">
+            <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook"></i></a>
+            <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-linkedin"></i></a>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="text-white text-lg font-semibold mb-4">Quick Links</h4>
+          <ul class="space-y-2">
+            <li><a href="index.htm" class="hover:text-white transition">Home</a></li>
+            <li><a href="demo.html" class="hover:text-white transition">Assessment</a></li>
+            <li><a href="roadmap.html" class="hover:text-white transition">Roadmap</a></li>
+            <li><a href="chatbot.html" class="hover:text-white transition">AI Mentor</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h4 class="text-white text-lg font-semibold mb-4">Resources</h4>
+          <ul class="space-y-2">
+            <li><a href="#" class="hover:text-white transition">Career Blog</a></li>
+            <li><a href="#" class="hover:text-white transition">Success Stories</a></li>
+            <li><a href="#" class="hover:text-white transition">Webinars</a></li>
+            <li><a href="#" class="hover:text-white transition">FAQ</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h4 class="text-white text-lg font-semibold mb-4">Contact Us</h4>
+          <ul class="space-y-2">
+            <li class="flex items-start">
+              <i class="fas fa-envelope mt-1 mr-2"></i>
+              <span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="9eedebeeeef1eceadefdffecfbfbeceeffeaf6b0fdf1f3">[email&#160;protected]</a></span>
+            </li>
+            <li class="flex items-start">
+              <i class="fas fa-phone mt-1 mr-2"></i>
+              <span>+1 (555) 123-4567</span>
+            </li>
+            <li class="flex items-start">
+              <i class="fas fa-map-marker-alt mt-1 mr-2"></i>
+              <span>123 Innovation Blvd, Tech City</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="border-t border-gray-800 mt-8 pt-8 text-sm text-center">
+        <p>CareerPath<a href="#" class="hover:text-white"></a>  <a href="#" class="hover:text-white"></a></p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- AI Chatbot Icon -->
+  <div class="chatbot-icon" onclick="window.location.href='chatbot.html'">
+    <i class="fas fa-robot"></i>
+    <div class="chatbot-tooltip">Chat with AI Mentor</div>
+  </div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script></body>
+</html>
